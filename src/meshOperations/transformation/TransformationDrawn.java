@@ -1,5 +1,7 @@
 package meshOperations.transformation;
 
+import javax.swing.JFrame;
+
 import org.lwjgl.util.vector.Vector3f;
 
 import source.MathToolbox;
@@ -17,14 +19,15 @@ public class TransformationDrawn extends AbstractTransformation {
 
 		centralPlain = (Vector3f) Vector3f.add(plain1Point, plain2Point, null).scale(0.5F);
 		normalVector = Vector3f.sub(plain2Point, centralPlain, null);
-		d = -Vector3f.dot(centralPlain, normalVector);
+		
 		normalVectorNormalized = normalVector.normalise(null);
-
+		d = -Vector3f.dot(centralPlain, normalVectorNormalized);
+		
 	}
 
 	@Override
 	public Vector3f transformVertex(Vector3f vertex, float delta) {
-		float weightX = Vector3f.dot(normalVector, vertex) + d;
+		float weightX = Vector3f.dot(normalVectorNormalized, vertex) + d;
 		float weightY = MathToolbox.getWeightNumber(weightX);
 
 		float weightYsqrt = MathToolbox.getWeightDerivationNumber(weightX);//(float) Math.sqrt(Math.abs(weightY));
@@ -46,5 +49,10 @@ public class TransformationDrawn extends AbstractTransformation {
 		ret = Vector3f.add(ret, taper, null);
 		
 		return ret;
+	}
+
+	@Override
+	public JFrame createEditFrame() {
+		return null;
 	}
 }
