@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,7 @@ import javax.swing.JScrollPane;
 
 import loader.EntityLoader;
 import meshOperations.MeshTransformer;
+import meshOperations.transformation.TransformationDrawn;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -91,6 +93,17 @@ public class MainFrame extends JFrame {
 
 			MeshTransformer mt = new MeshTransformer();
 
+			TransformationDrawn td = new TransformationDrawn("test", new Vector3f(-0.5F, 0, 0), new Vector3f(0.5F, 0, 0), 2);
+
+			mt.addTransformation(td);
+
+//			Vector3f[] vrt = { new Vector3f(-0.5F, 0, 0), new Vector3f(0.5F, 0, 0) };
+//			Color[] clr = { Color.black, Color.black };
+//			int[] ind = { 1, 2, 1 };
+//			Entity ent = new Entity(vrt, clr, ind);
+
+			float delta = 0;
+			float smer = 0.01F;
 			while (run) {
 				if (Display.wasResized()) {
 					GL11.glViewport(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -99,9 +112,19 @@ public class MainFrame extends JFrame {
 
 				camera.move();
 
-				float delta = 1;
+				delta += smer;
+				if (delta >= 1 || delta < 0) {
+					smer *= -1;
+				}
+
 				Entity bendedEntity = mt.transformtEntity(entity, delta);
 
+				// Entity bndEt = mt.transformtEntity(ent, 1);
+				// for (int i = 0; i < bndEt.getVerticies().length; i++) {
+				// System.out.println(bndEt.getVerticies()[i]);
+				// }
+				// System.out.println("==");
+				// run=false;
 				masterRenderer.processEntity(bendedEntity);
 
 				masterRenderer.render(camera);
