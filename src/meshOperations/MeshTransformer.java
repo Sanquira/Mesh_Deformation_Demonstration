@@ -19,11 +19,16 @@ public class MeshTransformer {
 		int[] indicies = entity.getIndexes();
 		Vector3f[] vertices = entity.getVerticies();
 		Vector3f[] newVertices = new Vector3f[vertices.length];
+
+		for (int i = 0; i < newVertices.length; i++) {
+			newVertices[i] = new Vector3f(vertices[i].x, vertices[i].y, vertices[i].z);
+		}
+
 		Color[] newColors = new Color[colors.length];
 		for (AbstractTransformation at : tr) {
 
 			for (int i = 0; i < vertices.length; i++) {
-				newVertices[i] = at.transformVertex(vertices[i], delta);
+				newVertices[i] = at.transformVertex(newVertices[i], delta);
 				newColors[i] = colors[i];
 			}
 
@@ -32,7 +37,7 @@ public class MeshTransformer {
 		return new Entity(newVertices, newColors, indicies);
 	}
 
-	public void addTransformation(TransformationDrawn td) {
+	public void addTransformation(AbstractTransformation td) {
 		tr.add(td);
 	}
 

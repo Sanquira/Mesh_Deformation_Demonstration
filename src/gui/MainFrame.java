@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import loader.EntityLoader;
 import meshOperations.MeshTransformer;
 import meshOperations.transformation.TransformationDrawn;
+import meshOperations.transformation.TransformationTorsion;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -94,14 +95,11 @@ public class MainFrame extends JFrame {
 
 			MeshTransformer mt = new MeshTransformer();
 
-			TransformationDrawn td = new TransformationDrawn("test", new Vector3f(-0.5F, 0, 0), new Vector3f(0.5F, 0, 0), 2);
+			TransformationDrawn td = new TransformationDrawn("test", new Vector3f(-0.5F, 0, 0), new Vector3f(1F, 0, 0), 1);
+			TransformationTorsion ts = new TransformationTorsion("test", new Vector3f(-1F, 0, 0), new Vector3f(1F, 0, 0), 1);
 
+			mt.addTransformation(ts);
 			mt.addTransformation(td);
-
-//			Vector3f[] vrt = { new Vector3f(-0.5F, 0, 0), new Vector3f(0.5F, 0, 0) };
-//			Color[] clr = { Color.black, Color.black };
-//			int[] ind = { 1, 2, 1 };
-//			Entity ent = new Entity(vrt, clr, ind);
 
 			float delta = 0;
 			float smer = 0.01F;
