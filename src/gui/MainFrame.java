@@ -67,6 +67,7 @@ public class MainFrame extends JFrame {
 		add(canvas, BorderLayout.CENTER);
 
 		JPanel rightPanel = new JPanel(new GridLayout(2, 1));
+		rightPanel.setPreferredSize(new Dimension(200,0));
 		JButton button = new JButton("test");
 		JScrollPane transformationList = new JScrollPane();
 
