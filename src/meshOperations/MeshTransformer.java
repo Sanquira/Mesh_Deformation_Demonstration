@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import meshOperations.transformation.AbstractTransformation;
-import meshOperations.transformation.TransformationDrawn;
 
 import org.lwjgl.util.vector.Vector3f;
 
