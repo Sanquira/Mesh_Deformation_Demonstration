@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import gui.swing.EditFrame;
 import source.MathToolbox;
 
 public class TransformationTorsion extends AbstractTransformation {
@@ -67,8 +68,9 @@ public class TransformationTorsion extends AbstractTransformation {
 	}
 
 	@Override
-	public JFrame createEditFrame() {
-		return null;
+	public void updateEditFrame(EditFrame frame) {
+		
+		
 	}
 
 }

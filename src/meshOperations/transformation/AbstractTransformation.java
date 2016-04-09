@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import gui.swing.EditFrame;
+
 public abstract class AbstractTransformation {
 
 	private String name;
@@ -15,8 +17,11 @@ public abstract class AbstractTransformation {
 	public String getName() {
 		return name;
 	}
+	public void setName(String name){
+		this.name = name;
+	}
 
 	abstract public Vector3f transformVertex(Vector3f vertex, float delta);
-	abstract public JFrame createEditFrame();
+	abstract public void updateEditFrame(EditFrame frame);
 
 }

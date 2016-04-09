@@ -5,6 +5,9 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -92,6 +95,14 @@ public class SelectPane extends JScrollPane {
 		label.setHorizontalAlignment(JLabel.LEFT);
 		result.add(label, BorderLayout.CENTER);
 		
+		result.addMouseListener(new MouseAdapter(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new EditFrame(t,true).setVisible(true);			
+			}
+			
+		});
 		return result;
 	}
 	public void shift(int pos){
