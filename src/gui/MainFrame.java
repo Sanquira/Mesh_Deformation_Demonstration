@@ -115,12 +115,6 @@ public class MainFrame extends JFrame {
 
 				Entity bendedEntity = mt.transformtEntity(entity, delta);
 
-				// Entity bndEt = mt.transformtEntity(ent, 1);
-				// for (int i = 0; i < bndEt.getVerticies().length; i++) {
-				// System.out.println(bndEt.getVerticies()[i]);
-				// }
-				// System.out.println("==");
-				// run=false;
 				masterRenderer.processEntity(bendedEntity);
 
 				masterRenderer.render(camera);
