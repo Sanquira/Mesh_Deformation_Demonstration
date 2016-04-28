@@ -5,10 +5,12 @@ import javax.swing.JFrame;
 import org.lwjgl.util.vector.Vector3f;
 
 import gui.swing.EditFrame;
-
+/*
+ * Abstraktni trida transformace.
+*/
 public abstract class AbstractTransformation {
 
-	private String name;
+	private String name;//jmeno transformace
 
 	public AbstractTransformation(String transformationName) {
 		name = transformationName;
@@ -21,7 +23,15 @@ public abstract class AbstractTransformation {
 		this.name = name;
 	}
 
+/*
+* Implementace transformace jednoho vertexu o deltu.
+*/
 	abstract public Vector3f transformVertex(Vector3f vertex, float delta);
+
+/*
+* Implementace okna nastaveni parametru transformace.
+*/
 	abstract public void updateEditFrame(EditFrame frame);
 
 }
+

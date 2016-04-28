@@ -3,7 +3,9 @@ package entities;
 import java.awt.Color;
 
 import org.lwjgl.util.vector.Vector3f;
-
+/*
+ * Objekt reprezentujici grafickou entitu. Obsahuje seznam vertexu a k nim prislusnych barev a pole indexu (navod k sestaveni). Obsahuje parametry transformace telesa a umoznuje jejich nastavovani.
+*/
 public class Entity {
 	private Vector3f[] verticies;
 	private Color[] color;

@@ -4,7 +4,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import source.Config;
-
+/*
+ * Trida reprezentujici to-point kameru. Poloha kamery se odvozuje od bodu na ktery se diva. Resi logiku ovladani kamery.
+ */
 public class Camera {
 
 	Config cf = Config.getInstance();
@@ -20,21 +22,27 @@ public class Camera {
 		this.cameraTarget = cameraTarget;
 	}
 
+/*
+ * Metoda ovladani kamery. Aktualizuje parametry kamery v zavislosti na vstupu z myši. Volana pred kazdym vykreslenim.
+ */
 	public void move() {
+// Vycteni HW vstupu
 		int dx = Mouse.getDX();
 		int dy = Mouse.getDY();
 		int dw = Mouse.getDWheel();
+//Vypne kurzor, pokud je stisknuto nejake tlacitko (brani ujizdeni kurzoru mimo okno
 		if (cf.isSomeMouseDown()) {
 			Mouse.setGrabbed(true);
 		} else {
 			Mouse.setGrabbed(false);
 		}
+//otoceni kamery
 		if (Mouse.isButtonDown(cf.KEY_ROTATER_CAMERA)) {
 			azimuth += dx * cf.MOUSE_SENSITIVITY;
 			zenith += -dy * cf.MOUSE_SENSITIVITY;
-			zenith = ensureRange(zenith, -Math.PI / 2, Math.PI / 2);
+			zenith = clampRange(zenith, -Math.PI / 2, Math.PI / 2);
 		}
-
+//zoom
 		radius += dw * cf.MOUSE_WHEEL_SENSITIVITY;
 		if (radius <= 0) {
 			radius = 0.01;
@@ -55,7 +63,10 @@ public class Camera {
 		cameraPosition = Vector3f.add(cameraTarget, new Vector3f(cameraDirection.x * (float) radius, cameraDirection.y * (float) radius, cameraDirection.z * (float) radius), null);
 	}
 
-	private double ensureRange(double value, double min, double max) {
+/*
+* Omezi vstupni hodnotu na interval.
+*/
+	private double clampRange(double value, double min, double max) {
 		return Math.min(Math.max(value, min), max);
 	}
 

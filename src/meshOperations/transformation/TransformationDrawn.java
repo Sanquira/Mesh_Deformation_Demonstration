@@ -14,10 +14,12 @@ import gui.swing.FloatPane;
 import gui.swing.StringPane;
 import gui.swing.VectorPane;
 import source.MathToolbox;
-
+/*
+* Transformace tazeni. Definuje dva body a hodnotu tazeni. Spojnice bodu je kolmice rovin jimi prochazejicich a urcujicich oblast transformace. Hodnota tazeni je cislo o ktere se oba body vzdali od stredu jejich spojnice.
+*/
 public class TransformationDrawn extends AbstractTransformation {
 
-	Vector3f plain1Point, plain2Point, normalVector, normalVectorNormalized, centralPlain;
+	Vector3f plain1Point, plain2Point, normalVectorNormalized;
 	float drawn, d;
 
 	public TransformationDrawn(String transformationName, Vector3f plain1Point, Vector3f plain2Point, float drawn) {
@@ -28,39 +30,47 @@ public class TransformationDrawn extends AbstractTransformation {
 
 		setup();
 	}
+
+/*
+* Metoda nastavujici parametry transformace.
+*/
 	public void setup(){
-		centralPlain = (Vector3f) Vector3f.add(plain1Point, plain2Point, null).scale(0.5F);
-		normalVector = Vector3f.sub(plain2Point, centralPlain, null);
+		Vector3f centralPlain = (Vector3f) Vector3f.add(plain1Point, plain2Point, null).scale(0.5F);	//bod ve stredu spojnice
+		Vector3f normalVector = Vector3f.sub(plain2Point, centralPlain, null);
 		
-		normalVectorNormalized = normalVector.normalise(null);
-		d = -Vector3f.dot(centralPlain, normalVectorNormalized);
+		normalVectorNormalized = normalVector.normalise(null);	//normalizovany vektor spojnice definicnich bodu
+		d = -Vector3f.dot(centralPlain, normalVectorNormalized);	//posun roviny stredu transformace (v puli spojnice), spolu s normalou definuje rovinu tvořici střed transformace (vertexy na ni se nehybaji)
 	}
+
 	@Override
 	public Vector3f transformVertex(Vector3f vertex, float delta) {
-		float weightX = Vector3f.dot(normalVectorNormalized, vertex) + d;
-		float weightY = MathToolbox.getWeightNumber(weightX);
+		float weightX = Vector3f.dot(normalVectorNormalized, vertex) + d;	//vzdalenost vertexu od stredove roviny
+		float weightY = MathToolbox.getWeightNumber(weightX);	//pomerovy posun vertexu vuci stredove rovine <-1;1>
 
-		float weightYsqrt = MathToolbox.getWeightDerivationNumber(weightX);//(float) Math.sqrt(Math.abs(weightY));
+		float weightYsqrt = MathToolbox.getWeightDerivationNumber(weightX);	//pomer zuzeni
 
-		float ratio = weightY * drawn * delta;
+		float ratio = weightY * drawn * delta;	//finalni hodnota natazeni vertexu
 
-		Vector3f tmp = new Vector3f(ratio * normalVectorNormalized.x, ratio * normalVectorNormalized.y, ratio * normalVectorNormalized.z);
-		Vector3f ret = Vector3f.add(vertex, tmp, null);
+		Vector3f tmp = new Vector3f(ratio * normalVectorNormalized.x, ratio * normalVectorNormalized.y, ratio * normalVectorNormalized.z); //vektor posunuti ve smeru kolmem na stredovou rovinu
+		Vector3f ret = Vector3f.add(vertex, tmp, null);	// provedeni posunuti 
 
-		float d = -Vector3f.dot(vertex, normalVectorNormalized);
-		float t = (-d - Vector3f.dot(normalVectorNormalized, plain2Point)) / Vector3f.dot(normalVectorNormalized, normalVectorNormalized);
+		float d = -Vector3f.dot(vertex, normalVectorNormalized); // hledani roviny kolme na spojnici, prochazejici vertexem
+		float t = (-d - Vector3f.dot(normalVectorNormalized, plain2Point)) / Vector3f.dot(normalVectorNormalized, normalVectorNormalized); //hledani parametru pruseciku spojnice a roviny na ni kolme prochazejici vertexem
 		ratio = t;
 		tmp = new Vector3f(ratio * normalVectorNormalized.x, ratio * normalVectorNormalized.y, ratio * normalVectorNormalized.z);
-		Vector3f p1 = Vector3f.add(plain2Point, tmp, null);
+		Vector3f p1 = Vector3f.add(plain2Point, tmp, null);	// prusecik
 
-		ratio = weightYsqrt * drawn * delta;
-		Vector3f taper = (Vector3f) Vector3f.sub(p1, vertex, null).scale(ratio);
-
-		ret = Vector3f.add(ret, taper, null);
+		ratio = weightYsqrt * drawn * delta;	//finalni hodnota zuzeni
+		Vector3f taper = (Vector3f) Vector3f.sub(p1, vertex, null).scale(ratio); //zuzeni jako posun ve smeru od vertexu ke spojnici
+	
+		ret = Vector3f.add(ret, taper, null); //spojeni natazeni a zuzeni
 		
 		return ret;
 	}
 
+/*
+* Metoda okna pro vytvareni/upravu transformace
+*/
 	@Override
 	public void updateEditFrame(EditFrame frame) {
 		frame.setTitle("Nečeho?");

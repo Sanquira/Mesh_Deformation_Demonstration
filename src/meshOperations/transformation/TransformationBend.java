@@ -5,7 +5,9 @@ import javax.swing.JFrame;
 import org.lwjgl.util.vector.Vector3f;
 
 import gui.swing.EditFrame;
-
+/*
+* Tranformace ohybu.
+*/
 public class TransformationBend extends AbstractTransformation {
 
 	public TransformationBend(String transformationName) {
