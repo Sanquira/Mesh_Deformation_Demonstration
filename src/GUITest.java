@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import gui.swing.EditFrame;
 import gui.swing.SelectPane;
 import meshOperations.transformation.AbstractTransformation;
 
@@ -52,9 +53,9 @@ public class GUITest {
 			}
 
 			@Override
-			public JFrame createEditFrame() {
+			public void updateEditFrame(EditFrame frame) {
 				// TODO Auto-generated method stub
-				return null;
+				
 			}
 			
 		});
@@ -67,9 +68,9 @@ public class GUITest {
 			}
 
 			@Override
-			public JFrame createEditFrame() {
+			public void updateEditFrame(EditFrame frame) {
 				// TODO Auto-generated method stub
-				return null;
+				
 			}
 			
 		});
@@ -82,9 +83,9 @@ public class GUITest {
 			}
 
 			@Override
-			public JFrame createEditFrame() {
+			public void updateEditFrame(EditFrame frame) {
 				// TODO Auto-generated method stub
-				return null;
+				
 			}
 			
 		});

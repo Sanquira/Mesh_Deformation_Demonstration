@@ -4,6 +4,10 @@ import javax.swing.JFrame;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import gui.swing.EditFrame;
+/*
+* Tranformace ohybu.
+*/
 public class TransformationBend extends AbstractTransformation {
 
 	public TransformationBend(String transformationName) {
@@ -16,8 +20,9 @@ public class TransformationBend extends AbstractTransformation {
 	}
 
 	@Override
-	public JFrame createEditFrame() {
-		return null;
+	public void updateEditFrame(EditFrame frame) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

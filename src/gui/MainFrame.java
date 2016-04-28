@@ -27,16 +27,19 @@ import entities.Camera;
 import entities.Entity;
 import gui.opengl.MasterRenderer;
 
+/*
+* Hlavni okno aplikace.
+*/
 public class MainFrame extends JFrame {
 
-	private boolean run;
-	private Canvas canvas;
+	private boolean run;	//bezi program?
+	private Canvas canvas;	//canvas pro OpenGL
 
-	private static final int FPS_CAP = 60;
+	private static final int FPS_CAP = 60;	//maximalni FPS OpenGL
 
 	public MainFrame(int displayWidth, int displayHeight) {
 
-		// setSize(frameWidth, frameHeight);
+		//nem
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -77,6 +80,11 @@ public class MainFrame extends JFrame {
 
 	private void initGL(int displayWidth, int displayHeight) {
 		try {
+			Entity entity = EntityLoader.showDialog();
+			if (entity == null) {
+				run = false;
+			}
+
 			Display.setParent(canvas);
 			Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
 			Display.create();
@@ -84,11 +92,6 @@ public class MainFrame extends JFrame {
 
 			Camera camera = new Camera(1.1207963368531804, 5, 0.4907963621106486, new Vector3f(0, 0, 0));
 			MasterRenderer masterRenderer = new MasterRenderer(displayWidth, displayHeight);
-
-			Entity entity = EntityLoader.showDialog();
-			if (entity == null) {
-				run = false;
-			}
 
 			MeshTransformer mt = new MeshTransformer();
 
