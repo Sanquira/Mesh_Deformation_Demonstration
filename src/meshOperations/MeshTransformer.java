@@ -8,17 +8,21 @@ import meshOperations.transformation.AbstractTransformation;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Entity;
+
 /*
-* Trida fronty mesh transformaci.
-*/
+ * Trida fronty mesh transformaci.
+ */
 public class MeshTransformer {
 
 	// Fronta transformaci
 	ArrayList<AbstractTransformation> tr = new ArrayList<>();
 
-/*
- * Metoda provadejici transformaci mesh mrizky entity. Vraci transformovanou entitu. Aplikuje postupne vsechny transformace ve fronte a kazdy vertex. Parametr delta umoznuje provest jen cast transformace.
-*/
+	/*
+	 * Metoda provadejici transformaci mesh mrizky entity.
+	 * Vraci transformovanou entitu.
+	 * Aplikuje postupne vsechny transformace ve fronte a kazdy vertex.
+	 * Parametr delta umoznuje provest jen cast transformace.
+	 */
 	public Entity transformtEntity(Entity entity, float delta) {
 		Color[] colors = entity.getColor();
 		int[] indicies = entity.getIndexes();
@@ -30,9 +34,9 @@ public class MeshTransformer {
 		}
 
 		Color[] newColors = new Color[colors.length];
-		for (AbstractTransformation at : tr) {	//cyklus transformaci
+		for (AbstractTransformation at : tr) { // cyklus transformaci
 
-			for (int i = 0; i < vertices.length; i++) {	//cyklus vertexu
+			for (int i = 0; i < vertices.length; i++) { // cyklus vertexu
 				newVertices[i] = at.transformVertex(newVertices[i], delta);
 				newColors[i] = colors[i];
 			}
@@ -42,9 +46,9 @@ public class MeshTransformer {
 		return new Entity(newVertices, newColors, indicies);
 	}
 
-/*
-* Prida transformaci do fronty
-*/
+	/*
+	 * Prida transformaci do fronty
+	 */
 	public void addTransformation(AbstractTransformation td) {
 		tr.add(td);
 	}

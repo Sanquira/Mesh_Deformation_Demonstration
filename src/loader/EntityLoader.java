@@ -17,15 +17,15 @@ import org.lwjgl.util.vector.Vector3f;
 import entities.Entity;
 
 /*
-* Trida parsujici .obj soubory do entity.
-*/
+ * Trida parsujici .obj soubory do entity.
+ */
 public class EntityLoader {
 	// zakladni barva kazdeho vertexu
 	private static final Color DEFAULT_COLOR = Color.BLUE;
-	
+
 	/*
-	* Zobrazi okno nacitani souboru a pri vyberu automaticky zavola nacitani souboru.
-	*/
+	 * Zobrazi okno nacitani souboru a pri vyberu automaticky zavola nacitani souboru.
+	 */
 	public static Entity showDialog() {
 		String desc = "Bender OBJ files";
 		String ext = "obj";
@@ -47,9 +47,9 @@ public class EntityLoader {
 		return null;
 	}
 
-/*
-* Parsuje soubor .obj do entity.
-*/
+	/*
+	 * Parsuje soubor .obj do entity.
+	 */
 	public static Entity loadNewEntity(String fileName) {
 		ArrayList<Vector3f> vertices = new ArrayList<>();
 		ArrayList<Integer> indexes = new ArrayList<>();
@@ -63,11 +63,11 @@ public class EntityLoader {
 			while ((line = br.readLine()) != null) {
 
 				String[] arr = line.split(" ");
-				if (arr[0].contains("#")) {	//komentare
+				if (arr[0].contains("#")) { // komentare
 					continue;
 				}
 
-				if (arr[0].contains("v")) {	//vertexy
+				if (arr[0].contains("v")) { // vertexy
 					float x = Float.valueOf(arr[1]);
 					float y = Float.valueOf(arr[2]);
 					float z = Float.valueOf(arr[3]);
@@ -76,7 +76,7 @@ public class EntityLoader {
 					colors.add(DEFAULT_COLOR);
 				}
 
-				if (arr[0].contains("f")) {	//indexy
+				if (arr[0].contains("f")) { // indexy
 					int x = Integer.valueOf(arr[1]) - 1;
 					int y = Integer.valueOf(arr[2]) - 1;
 					int z = Integer.valueOf(arr[3]) - 1;
@@ -92,7 +92,7 @@ public class EntityLoader {
 			e.printStackTrace();
 		}
 
-//transformace v entitu
+		// transformace v entitu
 		Vector3f[] arrVertices = new Vector3f[vertices.size()];
 		Color[] arrColors = new Color[colors.size()];
 		int[] arrIndexes = new int[indexes.size()];

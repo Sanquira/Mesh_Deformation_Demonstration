@@ -8,27 +8,29 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
-public class StringPane extends JPanel{
-	
+public class StringPane extends JPanel {
+
 	private JTextField txt;
 
-	public StringPane(String name, String text){
+	public StringPane(String name, String text) {
 		setLayout(new BorderLayout());
 		add(new JLabel(name), BorderLayout.WEST);
-		
+
 		JPanel pane = new JPanel();
-		pane.setLayout(new MigLayout("aligny center,fillx","[]","[]"));
+		pane.setLayout(new MigLayout("aligny center,fillx", "[]", "[]"));
 		txt = new JTextField();
 		pane.add(txt, "growx");
 		add(pane, BorderLayout.CENTER);
-		if(text != null){
+		if (text != null) {
 			setText(text);
 		}
 	}
-	public String getText(){
+
+	public String getText() {
 		return txt.getText();
 	}
-	public void setText(String text){
+
+	public void setText(String text) {
 		txt.setText(text);
 	}
 }

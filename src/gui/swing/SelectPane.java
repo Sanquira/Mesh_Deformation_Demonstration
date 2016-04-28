@@ -28,99 +28,103 @@ public class SelectPane extends JScrollPane {
 	private JPanel contentPane = new JPanel();
 	private JPanel listPane;
 	private int selected = 0;
-	
-	public SelectPane(ArrayList<AbstractTransformation> list){
+
+	public SelectPane(ArrayList<AbstractTransformation> list) {
 		this.list = list;
 		initialCreate();
 	}
+
 	private void initialCreate() {
 		contentPane.setLayout(new MigLayout("nogrid,fillx", "[]", "[grow 200,fill][]"));
-		
+
 		listPane = new JPanel();
-		listPane.setLayout(new MigLayout("wrap 1 ","[]","[]"));
+		listPane.setLayout(new MigLayout("wrap 1 ", "[]", "[]"));
 		updateList();
 		contentPane.add(listPane, "wrap");
-		
+
 		JPanel controlPane = new JPanel();
-		controlPane.setLayout(new GridLayout(1,2,10,10));
+		controlPane.setLayout(new GridLayout(1, 2, 10, 10));
 		JButton up = new JButton("Nahoru");
-		up.addActionListener(new ActionListener(){
+		up.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ButtonModel model = btns.getSelection();
-				if(model != null){
+				if (model != null) {
 					Integer pos = Integer.valueOf(model.getActionCommand());
-					if(pos != 0){
+					if (pos != 0) {
 						selected = pos - 1;
 						shift(pos);
 					}
-				}	
+				}
 			}
-			
+
 		});
 		JButton down = new JButton("Dolů");
-		down.addActionListener(new ActionListener(){
+		down.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ButtonModel model = btns.getSelection();
-				if(model != null){
+				if (model != null) {
 					Integer pos = Integer.valueOf(model.getActionCommand());
-					if(pos < list.size()-1){
+					if (pos < list.size() - 1) {
 						selected = pos + 1;
 						shift(pos);
 					}
-				}	
+				}
 			}
-			
+
 		});
 		controlPane.add(down);
 		controlPane.add(up);
 		contentPane.add(controlPane);
-		
+
 		this.setViewportView(contentPane);
 	}
+
 	private JPanel constructPanel(AbstractTransformation t, int i) {
 		JPanel result = new JPanel(new BorderLayout());
-		
+
 		JCheckBox check = new JCheckBox();
-		//System.out.println(i == selected);
+		// System.out.println(i == selected);
 		btns.add(check);
 		check.setSelected(i == selected);
 		check.setActionCommand(String.valueOf(i));
 		result.add(check, BorderLayout.WEST);
-		
+
 		JLabel label = new JLabel(t.getName());
 		label.setHorizontalAlignment(JLabel.LEFT);
 		result.add(label, BorderLayout.CENTER);
-		
-		result.addMouseListener(new MouseAdapter(){
+
+		result.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new EditFrame(t,true).setVisible(true);			
+				new EditFrame(t, true).setVisible(true);
 			}
-			
+
 		});
 		return result;
 	}
-	public void shift(int pos){
+
+	public void shift(int pos) {
 		AbstractTransformation a = list.remove(pos);
-		if(selected == list.size()){
+		if (selected == list.size()) {
 			list.add(a);
 		}
-		else{
-			list.add(selected,a);
+		else {
+			list.add(selected, a);
 		}
-		//System.out.println(list);
+		// System.out.println(list);
 		updateList();
 	}
-	public void updateList(){
+
+	public void updateList() {
 		listPane.removeAll();
-		for(int i = 0; i < list.size(); i++){
-			//System.out.println(list.get(i).getName());
-			listPane.add(constructPanel(list.get(i),i),"growx");
+		for (int i = 0; i < list.size(); i++) {
+			// System.out.println(list.get(i).getName());
+			listPane.add(constructPanel(list.get(i), i), "growx");
 		}
 		this.revalidate();
 		this.repaint();

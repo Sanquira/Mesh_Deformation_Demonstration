@@ -11,12 +11,12 @@ import entities.Camera;
 import entities.Entity;
 
 public class MasterRenderer {
-//parametry projection transformace
+	// parametry projection transformace
 	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.1f;
 	private static final float FAR_PLANE = 2000;
 
-//barva pozadi
+	// barva pozadi
 	private static final float RED = 0.7f;
 	private static final float GREEN = 0.7f;
 	private static final float BLUE = 0.7f;
@@ -28,9 +28,10 @@ public class MasterRenderer {
 		createProjectionMatrix(width, height);
 	}
 
-/*
-* Culling setri vykon pocitace zakazanim renderovani zadni strany trojuhelniku. Objekt do ktereho pak vjede kamera se stava neviditelnym.
-*/
+	/*
+	 * Culling setri vykon pocitace zakazanim renderovani zadni strany trojuhelniku.
+	 * Objekt do ktereho pak vjede kamera se stava neviditelnym.
+	 */
 	public static void enableCulling() {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
@@ -40,12 +41,15 @@ public class MasterRenderer {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 	}
 
-/*
-* Hlavni renderovaci metoda volana kazdy frame. Neprve vytvori matici kamery a umisti ji do modelview zasobniku. Pak projizdi vsechny entity ve fronte. Z kazde vytahne jeji transformaci a prinasobi ji k matici kamery, kterou si predtim naduplikuje v zasobniku, aby byla nezmenena k dispozici pro dalsi entitu. Kdyz je modelview transformace pripravena, vykresli vsechny trojuhelniky entity. Nasledne zvetsi meritko modelu o 0.1% a v tomto meritku vykresli hrany trojuhelniku. Po vykresleni cas zahodi modelview matici a zacne vykreslovat dalsi entitu. Kdyz jsou vsechny entity ve fronte vykresleny, smaze frontu.
-*/
+	/*
+	 * Hlavni renderovaci metoda volana kazdy frame. Neprve vytvori matici kamery a umisti ji do modelview zasobniku. Pak projizdi vsechny entity ve fronte. Z kazde
+	 * vytahne jeji transformaci a prinasobi ji k matici kamery, kterou si predtim naduplikuje v zasobniku, aby byla nezmenena k dispozici pro dalsi entitu. Kdyz je
+	 * modelview transformace pripravena, vykresli vsechny trojuhelniky entity. Nasledne zvetsi meritko modelu o 0.1% a v tomto meritku vykresli hrany trojuhelniku. Po
+	 * vykresleni cas zahodi modelview matici a zacne vykreslovat dalsi entitu. Kdyz jsou vsechny entity ve fronte vykresleny, smaze frontu.
+	 */
 	public void render(Camera camera) {
 		prepare();
-		//matice kamery
+		// matice kamery
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 		Vector3f camPos = camera.getCameraPosition();
@@ -56,7 +60,7 @@ public class MasterRenderer {
 			Vector3f[] vertices = entity.getVerticies();
 			Color[] colors = entity.getColor();
 			int[] indexes = entity.getIndexes();
-			//transformace entity
+			// transformace entity
 			Vector3f entityPos = entity.getPosition();
 			Vector3f entityScale = entity.getScale();
 			GL11.glPushMatrix();
@@ -65,7 +69,7 @@ public class MasterRenderer {
 			GL11.glRotatef(entity.getRotX(), 1, 0, 0);
 			GL11.glScalef(entityScale.x, entityScale.y, entityScale.z);
 			GL11.glTranslatef(entityPos.x, entityPos.y, entityPos.z);
-			//vykresleni trojuhelniku
+			// vykresleni trojuhelniku
 			GL11.glBegin(GL11.GL_TRIANGLES);
 			for (int i = 0; i < indexes.length; i++) {
 				int idx = indexes[i];
@@ -75,7 +79,7 @@ public class MasterRenderer {
 				GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
 			}
 			GL11.glEnd();
-			//vykresleni car
+			// vykresleni car
 			GL11.glLineWidth(3);
 			GL11.glScalef(1.001F, 1.001F, 1.001F);
 			GL11.glBegin(GL11.GL_LINES);
@@ -100,27 +104,27 @@ public class MasterRenderer {
 		entities.clear();
 	}
 
-/*
-* Prida entitu do fronty k vykresleni
-*/
+	/*
+	 * Prida entitu do fronty k vykresleni
+	 */
 	public void processEntity(Entity entity) {
 		entities.add(entity);
 	}
 
-/*
- * Nastavi OpenGL pred kazdym framem.
-*/
+	/*
+	 * Nastavi OpenGL pred kazdym framem.
+	 */
 	private void prepare() {
-		GL11.glEnable(GL11.GL_DEPTH_TEST); //zapne depth test
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); //smaze predchozi depth a color buffer
-		GL11.glClearColor(RED, GREEN, BLUE, 1); //nastavi barvu pozadi
-		GL11.glEnable(GL11.GL_BLEND);//zapne pruhlednost (zbytecne)
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);//nastavi funkci pruhlednosti (zbytecne)
+		GL11.glEnable(GL11.GL_DEPTH_TEST); // zapne depth test
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // smaze predchozi depth a color buffer
+		GL11.glClearColor(RED, GREEN, BLUE, 1); // nastavi barvu pozadi
+		GL11.glEnable(GL11.GL_BLEND);// zapne pruhlednost (zbytecne)
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);// nastavi funkci pruhlednosti (zbytecne)
 	}
 
-/*
-* Vytvari projekcni matici a nahraje ji do projection zasobniku
-*/
+	/*
+	 * Vytvari projekcni matici a nahraje ji do projection zasobniku
+	 */
 	public void createProjectionMatrix(int width, int height) {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
@@ -134,4 +138,3 @@ public class MasterRenderer {
 		return entities;
 	}
 }
-
