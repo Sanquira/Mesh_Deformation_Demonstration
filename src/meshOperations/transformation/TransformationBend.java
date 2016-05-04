@@ -11,6 +11,8 @@ import gui.swing.EditFrame;
  */
 public class TransformationBend extends AbstractTransformation {
 
+	public TransformationBend(){}
+	
 	public TransformationBend(String transformationName) {
 		super(transformationName);
 	}

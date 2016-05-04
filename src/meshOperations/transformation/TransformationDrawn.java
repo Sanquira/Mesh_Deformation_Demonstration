@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -13,6 +16,7 @@ import gui.swing.EditFrame;
 import gui.swing.FloatPane;
 import gui.swing.StringPane;
 import gui.swing.VectorPane;
+import loader.MarshalVector;
 import source.MathToolbox;
 
 /*
@@ -20,11 +24,15 @@ import source.MathToolbox;
  * Spojnice bodu je kolmice rovin jimi prochazejicich a urcujicich oblast transformace. 
  * Hodnota tazeni je cislo o ktere se oba body vzdali od stredu jejich spojnice.
  */
+@XmlRootElement
 public class TransformationDrawn extends AbstractTransformation {
 
+	@XmlTransient
 	Vector3f plain1Point, plain2Point, normalVectorNormalized;
+	@XmlElement
 	float drawn, d;
 
+	public TransformationDrawn(){}
 	public TransformationDrawn(String transformationName, Vector3f plain1Point, Vector3f plain2Point, float drawn) {
 		super(transformationName);
 		this.plain1Point = plain1Point;
@@ -109,5 +117,32 @@ public class TransformationDrawn extends AbstractTransformation {
 			}
 
 		});
+	}
+	/*
+	 * Gettery a Settery pro ukládání do XML, XML nepodporuje Vector3f, proto je použit MarshalVector
+	 */	
+	@XmlElement
+	public MarshalVector getPlain1Point() {
+		return new MarshalVector(plain1Point);
+	}
+
+	public void setPlain1Point(MarshalVector plain1Point) {
+		this.plain1Point = plain1Point.getVector();
+	}
+	@XmlElement
+	public MarshalVector getPlain2Point() {
+		return new MarshalVector(plain2Point);
+	}
+
+	public void setPlain2Point(MarshalVector plain2Point) {
+		this.plain2Point = plain2Point.getVector();
+	}
+	@XmlElement
+	public MarshalVector getNormalVectorNormalized() {
+		return new MarshalVector(normalVectorNormalized);
+	}
+
+	public void setNormalVectorNormalized(MarshalVector normalVectorNormalized) {
+		this.normalVectorNormalized = normalVectorNormalized.getVector();
 	}
 }

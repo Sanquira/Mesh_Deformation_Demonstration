@@ -1,12 +1,16 @@
 package meshOperations.transformation;
 
 import javax.swing.JFrame;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import gui.swing.EditFrame;
+import loader.MarshalVector;
 import source.MathToolbox;
 
 /*
@@ -14,11 +18,15 @@ import source.MathToolbox;
  * Spojnice bodu je kolmice rovin jimi prochazejicich a urcujicich oblast transformace. 
  * Hodnota krutu je uhel o ktery se pootoci vertexy ve vzdalenosti hranicnich bodu a vetsi.
  */
+@XmlRootElement
 public class TransformationTorsion extends AbstractTransformation {
-
+	
+	@XmlTransient
 	Vector3f plain1Point, plain2Point, normalVectorNormalized;
+	@XmlElement
 	float angle, d;
-
+	
+	public TransformationTorsion(){}
 	/*
 	 * Konstruktor a nastaveni parametru transformace.
 	 * (Je zatim v konstruktoru protoze neni implementovana metoda updateEditFrame.)
@@ -89,5 +97,30 @@ public class TransformationTorsion extends AbstractTransformation {
 	public void updateEditFrame(EditFrame frame) {
 
 	}
+	@XmlElement
+	public MarshalVector getPlain1Point() {
+		return new MarshalVector(plain1Point);
+	}
+
+	public void setPlain1Point(MarshalVector plain1Point) {
+		this.plain1Point = plain1Point.getVector();
+	}
+	@XmlElement
+	public MarshalVector getPlain2Point() {
+		return new MarshalVector(plain2Point);
+	}
+
+	public void setPlain2Point(MarshalVector plain2Point) {
+		this.plain2Point = plain2Point.getVector();
+	}
+	@XmlElement
+	public MarshalVector getNormalVectorNormalized() {
+		return new MarshalVector(normalVectorNormalized);
+	}
+
+	public void setNormalVectorNormalized(MarshalVector normalVectorNormalized) {
+		this.normalVectorNormalized = normalVectorNormalized.getVector();
+	}
+	
 
 }
