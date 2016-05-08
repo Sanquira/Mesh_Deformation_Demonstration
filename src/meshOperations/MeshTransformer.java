@@ -48,19 +48,12 @@ public class MeshTransformer {
 		return new Entity(newVertices, indicies);
 	}
 
-	/*
-	 * Prida transformaci do fronty
-	 */
 	public void addTransformation(AbstractTransformation td) {
 		transformationList.add(td);
 	}
 
 	public void addTransformationAll(ArrayList<AbstractTransformation> list) {
 		transformationList.addAll(list);
-	}
-
-	public void removeAll() {
-		transformationList.clear();
 	}
 
 	public void removeTransformation(AbstractTransformation tr) {
@@ -73,11 +66,6 @@ public class MeshTransformer {
 
 	public void clearAll() {
 		transformationList.clear();
-	}
-
-	public void replaceTransformationAll(ArrayList<AbstractTransformation> list) {
-		transformationList.clear();
-		transformationList.addAll(list);
 	}
 
 }
