@@ -1,12 +1,11 @@
 package meshOperations.transformation;
 
-import javax.swing.JFrame;
+import gui.swing.EditFrame;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.lwjgl.util.vector.Vector3f;
-
-import gui.swing.EditFrame;
 
 /*
  * Abstraktni trida transformace.

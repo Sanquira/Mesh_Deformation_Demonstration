@@ -1,30 +1,21 @@
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.naming.spi.ObjectFactory;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
-
-import org.lwjgl.util.vector.Vector3f;
 
 import loader.Loader;
 import meshOperations.transformation.AbstractTransformation;
 import meshOperations.transformation.TransformationDrawn;
+
+import org.lwjgl.util.vector.Vector3f;
 
 public class MarshallTest {
 
 	public static void main(String[] args) throws JAXBException, FileNotFoundException {
 		Vector3f t = new Vector3f(1,1,1);
 		TransformationDrawn trs = new TransformationDrawn("sexy",t,t,(float) 5);
-		ArrayList<AbstractTransformation> list = new ArrayList<>();
+		CopyOnWriteArrayList<AbstractTransformation> list = new CopyOnWriteArrayList<>();
 		list.add(trs);
 		Loader.saveDialog(list);
 		ArrayList<AbstractTransformation> x = Loader.loadDialog();

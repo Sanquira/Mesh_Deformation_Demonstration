@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<transformace>
+    <item xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transformationBend">
+        <name>Ohyb</name>
+        <radius>0.5</radius>
+        <bend>1.0</bend>
+        <direction x="0.0" y="1.0" z="0.0"/>
+        <point x="0.0" y="0.0" z="0.0"/>
+    </item>
+    <item xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transformationDrawn">
+        <name>Tažení</name>
+        <drawn>1.0</drawn>
+        <d>-0.0</d>
+        <normalVectorNormalized x="0.0" y="0.0" z="1.0"/>
+        <plain1Point x="0.0" y="0.0" z="-1.0"/>
+        <plain2Point x="0.0" y="0.0" z="1.0"/>
+    </item>
+    <item xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transformationTorsion">
+        <name>Krut</name>
+        <angle>0.5</angle>
+        <d>-0.25</d>
+        <normalVectorNormalized x="1.0" y="0.0" z="0.0"/>
+        <plain1Point x="-0.5" y="0.0" z="0.0"/>
+        <plain2Point x="1.0" y="0.0" z="0.0"/>
+    </item>
+</transformace>

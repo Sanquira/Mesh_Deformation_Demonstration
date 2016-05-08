@@ -1,13 +1,14 @@
+import gui.swing.EditFrame;
+import gui.swing.SelectPane;
+
 import java.awt.EventQueue;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JFrame;
 
-import org.lwjgl.util.vector.Vector3f;
-
-import gui.swing.EditFrame;
-import gui.swing.SelectPane;
 import meshOperations.transformation.AbstractTransformation;
+
+import org.lwjgl.util.vector.Vector3f;
 
 public class GUITest {
 
@@ -43,7 +44,7 @@ public class GUITest {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ArrayList<AbstractTransformation> list = new ArrayList<AbstractTransformation>();
+		CopyOnWriteArrayList<AbstractTransformation> list = new CopyOnWriteArrayList<AbstractTransformation>();
 		list.add(new AbstractTransformation("Karel"){
 			
 			@Override

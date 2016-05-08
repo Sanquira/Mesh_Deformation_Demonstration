@@ -1,7 +1,7 @@
 package meshOperations;
 
-import java.awt.Color;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import meshOperations.transformation.AbstractTransformation;
 
@@ -15,7 +15,7 @@ import entities.Entity;
 public class MeshTransformer {
 
 	// Fronta transformaci
-	ArrayList<AbstractTransformation> tr = new ArrayList<>();
+	CopyOnWriteArrayList<AbstractTransformation> transformationList = new CopyOnWriteArrayList<>();
 
 	/*
 	 * Metoda provadejici transformaci mesh mrizky entity.
@@ -24,7 +24,10 @@ public class MeshTransformer {
 	 * Parametr delta umoznuje provest jen cast transformace.
 	 */
 	public Entity transformtEntity(Entity entity, float delta) {
-		Color[] colors = entity.getColor();
+		if (transformationList.isEmpty()) {
+			return entity;
+		}
+
 		int[] indicies = entity.getIndexes();
 		Vector3f[] vertices = entity.getVerticies();
 		Vector3f[] newVertices = new Vector3f[vertices.length];
@@ -33,24 +36,48 @@ public class MeshTransformer {
 			newVertices[i] = new Vector3f(vertices[i].x, vertices[i].y, vertices[i].z);
 		}
 
-		Color[] newColors = new Color[colors.length];
-		for (AbstractTransformation at : tr) { // cyklus transformaci
+		for (AbstractTransformation at : transformationList) { // cyklus transformaci
 
 			for (int i = 0; i < vertices.length; i++) { // cyklus vertexu
 				newVertices[i] = at.transformVertex(newVertices[i], delta);
-				newColors[i] = colors[i];
+
 			}
 
 		}
 
-		return new Entity(newVertices, newColors, indicies);
+		return new Entity(newVertices, indicies);
 	}
 
 	/*
 	 * Prida transformaci do fronty
 	 */
 	public void addTransformation(AbstractTransformation td) {
-		tr.add(td);
+		transformationList.add(td);
+	}
+
+	public void addTransformationAll(ArrayList<AbstractTransformation> list) {
+		transformationList.addAll(list);
+	}
+
+	public void removeAll() {
+		transformationList.clear();
+	}
+
+	public void removeTransformation(AbstractTransformation tr) {
+		transformationList.remove(tr);
+	}
+
+	public CopyOnWriteArrayList<AbstractTransformation> getTransformationAll() {
+		return transformationList;
+	}
+
+	public void clearAll() {
+		transformationList.clear();
+	}
+
+	public void replaceTransformationAll(ArrayList<AbstractTransformation> list) {
+		transformationList.clear();
+		transformationList.addAll(list);
 	}
 
 }

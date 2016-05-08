@@ -1,6 +1,5 @@
 package gui.swing;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,7 +13,7 @@ import net.miginfocom.swing.MigLayout;
 public class EditFrame extends JFrame {
 
 	private AbstractTransformation transformation;
-	private boolean editing;
+	public boolean editing;
 	private JPanel customPane;
 	private JButton actionButton;
 	private ActionListener edit, create;
@@ -22,6 +21,7 @@ public class EditFrame extends JFrame {
 	public EditFrame(AbstractTransformation trans, boolean edit) {
 		this.transformation = trans;
 		this.editing = edit;
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		constructFrame();
 	}
 
@@ -33,6 +33,8 @@ public class EditFrame extends JFrame {
 		customPane = new JPanel();
 		add(customPane, "wrap");
 
+		JFrame frame = this;
+
 		JPanel buttonPane = new JPanel();
 		actionButton = new JButton((editing ? "Uložit" : "Vytvořit"));
 		actionButton.addActionListener(new ActionListener() {
@@ -40,14 +42,31 @@ public class EditFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				edit.actionPerformed(e);
+				if (!editing) {
+					create.actionPerformed(e);
+					frame.dispose();
+				}
 			}
 
 		});
+		JButton closeButton = new JButton("Zavřít");
+		closeButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				if (!editing) {
+					transformation = null;
+				}
+			}
+		});
 		buttonPane.add(actionButton);
+		buttonPane.add(closeButton);
 		add(buttonPane);
 		transformation.updateEditFrame(this);
 	}
 
+	@Override
 	public void setTitle(String title) {
 		super.setTitle((editing ? "Úprava " : "Tvorba ") + title);
 	}
@@ -56,11 +75,12 @@ public class EditFrame extends JFrame {
 		return customPane;
 	}
 
-	public void setCreateListener(ActionListener a) {
-		create = a;
-	}
-
 	public void setEditListener(ActionListener a) {
 		edit = a;
+	}
+
+	public EditFrame setCreateListener(ActionListener e) {
+		create = e;
+		return this;
 	}
 }

@@ -25,6 +25,10 @@ public class StringPane extends JPanel {
 			setText(text);
 		}
 	}
+	
+	public void setEnabled(boolean enable){
+		txt.setEnabled(enable);
+	}
 
 	public String getText() {
 		return txt.getText();

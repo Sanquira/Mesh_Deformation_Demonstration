@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
+import source.Config;
 import entities.Camera;
 import entities.Entity;
 
@@ -58,7 +59,6 @@ public class MasterRenderer {
 
 		for (Entity entity : entities) {
 			Vector3f[] vertices = entity.getVerticies();
-			Color[] colors = entity.getColor();
 			int[] indexes = entity.getIndexes();
 			// transformace entity
 			Vector3f entityPos = entity.getPosition();
@@ -74,13 +74,12 @@ public class MasterRenderer {
 			for (int i = 0; i < indexes.length; i++) {
 				int idx = indexes[i];
 				Vector3f vertex = vertices[idx];
-				Color clr = colors[idx];
-				GL11.glColor3f(clr.getRed(), clr.getGreen(), clr.getBlue());
+				GL11.glColor3f(Config.DEFAULT_COLOR_TRIANGLES.x, Config.DEFAULT_COLOR_TRIANGLES.y, Config.DEFAULT_COLOR_TRIANGLES.z);
 				GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
 			}
 			GL11.glEnd();
 			// vykresleni car
-			GL11.glLineWidth(3);
+			GL11.glLineWidth(2);
 			GL11.glScalef(1.001F, 1.001F, 1.001F);
 			GL11.glBegin(GL11.GL_LINES);
 			for (int i = 0; i < indexes.length; i += 3) {
@@ -90,7 +89,7 @@ public class MasterRenderer {
 				Vector3f vertex = vertices[idx];
 				Vector3f vertex2 = vertices[idx2];
 				Vector3f vertex3 = vertices[idx3];
-				GL11.glColor3f(1, 1, 0);
+				GL11.glColor3f(Config.DEFAULT_COLOR_LINES.x, Config.DEFAULT_COLOR_LINES.y, Config.DEFAULT_COLOR_LINES.z);
 				GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
 				GL11.glVertex3f(vertex2.x, vertex2.y, vertex2.z);
 				GL11.glVertex3f(vertex.x, vertex.y, vertex.z);

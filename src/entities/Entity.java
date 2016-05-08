@@ -1,7 +1,5 @@
 package entities;
 
-import java.awt.Color;
-
 import org.lwjgl.util.vector.Vector3f;
 
 /*
@@ -11,16 +9,14 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Entity {
 	private Vector3f[] verticies;
-	private Color[] color;
 	private int[] indexes;
 
 	private Vector3f position = new Vector3f();
 	private float rotX = 0, rotY = 0, rotZ = 0;
 	private Vector3f scale = new Vector3f(1, 1, 1);
 
-	public Entity(Vector3f[] verticies, Color[] color, int[] indexes) {
+	public Entity(Vector3f[] verticies, int[] indexes) {
 		this.verticies = verticies;
-		this.color = color;
 		this.indexes = indexes;
 	}
 
@@ -78,10 +74,6 @@ public class Entity {
 
 	public Vector3f[] getVerticies() {
 		return verticies;
-	}
-
-	public Color[] getColor() {
-		return color;
 	}
 
 	public int[] getIndexes() {

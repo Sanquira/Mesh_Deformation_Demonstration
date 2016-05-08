@@ -1,16 +1,26 @@
 package meshOperations.transformation;
 
-import javax.swing.JFrame;
+import gui.swing.EditFrame;
+import gui.swing.FloatPane;
+import gui.swing.StringPane;
+import gui.swing.VectorPane;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import loader.MarshalVector;
+
 import org.lwjgl.util.vector.Matrix3f;
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import gui.swing.EditFrame;
-import loader.MarshalVector;
 import source.MathToolbox;
 
 /*
@@ -20,13 +30,15 @@ import source.MathToolbox;
  */
 @XmlRootElement
 public class TransformationTorsion extends AbstractTransformation {
-	
+
 	@XmlTransient
 	Vector3f plain1Point, plain2Point, normalVectorNormalized;
 	@XmlElement
 	float angle, d;
-	
-	public TransformationTorsion(){}
+
+	public TransformationTorsion() {
+	}
+
 	/*
 	 * Konstruktor a nastaveni parametru transformace.
 	 * (Je zatim v konstruktoru protoze neni implementovana metoda updateEditFrame.)
@@ -36,19 +48,28 @@ public class TransformationTorsion extends AbstractTransformation {
 		this.plain1Point = plain1Point;
 		this.plain2Point = plain2Point;
 		this.angle = angle;
-		
-		setup()
+
+		setup();
 	}
-	public setup(){
+
+	public void setup() {
 		Vector3f centralPlain = (Vector3f) Vector3f.add(plain1Point, plain2Point, null).scale(0.5F); // bod ve stredu spojnice
 		Vector3f normalVector = Vector3f.sub(plain2Point, centralPlain, null);
 
-		normalVectorNormalized = normalVector.normalise(null); // normalizovany vektor spojnice definicnich bodu
+		if (normalVector.length() == 0) {
+			normalVectorNormalized = normalVector;
+		} else {
+			normalVectorNormalized = normalVector.normalise(null); // normalizovany vektor spojnice definicnich bodu
+		}
 		d = -Vector3f.dot(centralPlain, normalVectorNormalized); // posun roviny stredu transformace (v puli spojnice), spolu s normalou definuje rovinu tvořici střed
-																	// transformace (vertexy na ni se nehybaji)	
+																	// transformace (vertexy na ni se nehybaji)
 	}
+
 	@Override
 	public Vector3f transformVertex(Vector3f vertex, float delta) {
+		if(normalVectorNormalized.length()==0){
+			return vertex;
+		}
 		float weightX = Vector3f.dot(normalVectorNormalized, vertex) + d; // vzdalenost vertexu od stredove roviny
 		float weightY = MathToolbox.getWeightNumber(weightX); // pomerove otoceni vertexu vuci stredove rovine <-1;1>
 
@@ -97,21 +118,21 @@ public class TransformationTorsion extends AbstractTransformation {
 	 */
 	@Override
 	public void updateEditFrame(EditFrame frame) {
-		frame.setTitle("Krutu?");
+		frame.setTitle("Krutu");
 		frame.setSize(600, 200);
 		JPanel pane = frame.getPanel();
 		pane.setLayout(new GridLayout(2, 2, 10, 10));
 
-		VectorPane plain1 = new VectorPane("plain1point", plain1Point);
+		VectorPane plain1 = new VectorPane("Bod 1", plain1Point);
 		pane.add(plain1);
 
-		VectorPane plain2 = new VectorPane("plain2point", plain2Point);
+		VectorPane plain2 = new VectorPane("Bod 2", plain2Point);
 		pane.add(plain2);
 
 		StringPane name = new StringPane("Jméno", super.getName());
 		pane.add(name);
 
-		FloatPane flt = new FloatPane("angle", angle);
+		FloatPane flt = new FloatPane("Batman", angle);
 		pane.add(flt);
 
 		TransformationTorsion drw = this;
@@ -128,6 +149,7 @@ public class TransformationTorsion extends AbstractTransformation {
 
 		});
 	}
+
 	@XmlElement
 	public MarshalVector getPlain1Point() {
 		return new MarshalVector(plain1Point);
@@ -136,6 +158,7 @@ public class TransformationTorsion extends AbstractTransformation {
 	public void setPlain1Point(MarshalVector plain1Point) {
 		this.plain1Point = plain1Point.getVector();
 	}
+
 	@XmlElement
 	public MarshalVector getPlain2Point() {
 		return new MarshalVector(plain2Point);
@@ -144,6 +167,7 @@ public class TransformationTorsion extends AbstractTransformation {
 	public void setPlain2Point(MarshalVector plain2Point) {
 		this.plain2Point = plain2Point.getVector();
 	}
+
 	@XmlElement
 	public MarshalVector getNormalVectorNormalized() {
 		return new MarshalVector(normalVectorNormalized);
@@ -152,6 +176,5 @@ public class TransformationTorsion extends AbstractTransformation {
 	public void setNormalVectorNormalized(MarshalVector normalVectorNormalized) {
 		this.normalVectorNormalized = normalVectorNormalized.getVector();
 	}
-	
 
 }

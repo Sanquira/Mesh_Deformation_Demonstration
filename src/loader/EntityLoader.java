@@ -14,14 +14,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import source.Config;
 import entities.Entity;
 
 /*
  * Trida parsujici .obj soubory do entity.
  */
 public class EntityLoader {
-	// zakladni barva kazdeho vertexu
-	private static final Color DEFAULT_COLOR = Color.BLUE;
 
 	/*
 	 * Zobrazi okno nacitani souboru a pri vyberu automaticky zavola nacitani souboru.
@@ -53,7 +52,6 @@ public class EntityLoader {
 	public static Entity loadNewEntity(String fileName) {
 		ArrayList<Vector3f> vertices = new ArrayList<>();
 		ArrayList<Integer> indexes = new ArrayList<>();
-		ArrayList<Color> colors = new ArrayList<>();
 
 		BufferedReader br = null;
 
@@ -73,7 +71,6 @@ public class EntityLoader {
 					float z = Float.valueOf(arr[3]);
 					Vector3f vertice = new Vector3f(x, y, z);
 					vertices.add(vertice);
-					colors.add(DEFAULT_COLOR);
 				}
 
 				if (arr[0].contains("f")) { // indexy
@@ -94,17 +91,15 @@ public class EntityLoader {
 
 		// transformace v entitu
 		Vector3f[] arrVertices = new Vector3f[vertices.size()];
-		Color[] arrColors = new Color[colors.size()];
 		int[] arrIndexes = new int[indexes.size()];
 
 		for (int i = 0; i < arrVertices.length; i++) {
 			arrVertices[i] = vertices.get(i);
-			arrColors[i] = colors.get(i);
 		}
 		for (int i = 0; i < arrIndexes.length; i++) {
 			arrIndexes[i] = indexes.get(i);
 		}
 
-		return new Entity(arrVertices, arrColors, arrIndexes);
+		return new Entity(arrVertices, arrIndexes);
 	}
 }

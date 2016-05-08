@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -64,10 +65,10 @@ public class Loader {
 	/*
 	 * Ukládací dialog
 	 */
-	public static void saveDialog(ArrayList<AbstractTransformation> list) throws FileNotFoundException, JAXBException{
+	public static void saveDialog(CopyOnWriteArrayList<AbstractTransformation> copyOnWriteArrayList) throws FileNotFoundException, JAXBException{
 		String name = showDialog(true);
 		if( name != null ){
-			save(name, list);
+			save(name, copyOnWriteArrayList);
 		}
 	}
 	/*
@@ -81,9 +82,9 @@ public class Loader {
 	/*
 	 * Samotné ukládání
 	 */
-	private static void save(String name, ArrayList<AbstractTransformation> list) throws FileNotFoundException, JAXBException{
+	private static void save(String name, CopyOnWriteArrayList<AbstractTransformation> copyOnWriteArrayList) throws FileNotFoundException, JAXBException{
 		setup();
-		JAXBElement<AbstractTransformation[]> root = new JAXBElement<AbstractTransformation[]>(new QName("transformace"), AbstractTransformation[].class,AbstractTransformation.class,list.toArray(new AbstractTransformation[list.size()]));
+		JAXBElement<AbstractTransformation[]> root = new JAXBElement<AbstractTransformation[]>(new QName("transformace"), AbstractTransformation[].class,AbstractTransformation.class,copyOnWriteArrayList.toArray(new AbstractTransformation[copyOnWriteArrayList.size()]));
 		m.marshal(root, new FileOutputStream(new File(name)));
 	}
 	/*

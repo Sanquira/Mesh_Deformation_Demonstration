@@ -1,14 +1,13 @@
 package gui.swing;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -23,14 +22,14 @@ import net.miginfocom.swing.MigLayout;
 
 public class SelectPane extends JScrollPane {
 
-	private ArrayList<AbstractTransformation> list;
+	private CopyOnWriteArrayList<AbstractTransformation> list;
 	private ButtonGroup btns = new ButtonGroup();
 	private JPanel contentPane = new JPanel();
 	private JPanel listPane;
-	private int selected = 0;
+	public int selected = 0;
 
-	public SelectPane(ArrayList<AbstractTransformation> list) {
-		this.list = list;
+	public SelectPane(CopyOnWriteArrayList<AbstractTransformation> copyOnWriteArrayList) {
+		this.list = copyOnWriteArrayList;
 		initialCreate();
 	}
 
@@ -43,7 +42,7 @@ public class SelectPane extends JScrollPane {
 		contentPane.add(listPane, "wrap");
 
 		JPanel controlPane = new JPanel();
-		controlPane.setLayout(new GridLayout(1, 2, 10, 10));
+		controlPane.setLayout(new GridLayout(1, 3, 10, 10));
 		JButton up = new JButton("Nahoru");
 		up.addActionListener(new ActionListener() {
 
@@ -76,9 +75,23 @@ public class SelectPane extends JScrollPane {
 			}
 
 		});
+		JButton delete = new JButton("Smaž");
+		delete.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ButtonModel model = btns.getSelection();
+				if (model != null) {
+					Integer pos = Integer.valueOf(model.getActionCommand());
+					delete(pos);
+				}
+			}
+
+		});
 		controlPane.add(down);
 		controlPane.add(up);
-		contentPane.add(controlPane);
+		contentPane.add(controlPane, "wrap");
+		contentPane.add(delete);
 
 		this.setViewportView(contentPane);
 	}
@@ -120,6 +133,11 @@ public class SelectPane extends JScrollPane {
 		updateList();
 	}
 
+	public void delete(int pos) {
+		list.remove(pos);
+		updateList();
+	}
+
 	public void updateList() {
 		listPane.removeAll();
 		for (int i = 0; i < list.size(); i++) {
@@ -129,4 +147,9 @@ public class SelectPane extends JScrollPane {
 		this.revalidate();
 		this.repaint();
 	}
+
+	public CopyOnWriteArrayList<AbstractTransformation> getList() {
+		return list;
+	}
+
 }

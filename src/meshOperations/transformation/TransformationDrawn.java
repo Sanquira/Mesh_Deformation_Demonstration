@@ -32,7 +32,9 @@ public class TransformationDrawn extends AbstractTransformation {
 	@XmlElement
 	float drawn, d;
 
-	public TransformationDrawn(){}
+	public TransformationDrawn() {
+	}
+
 	public TransformationDrawn(String transformationName, Vector3f plain1Point, Vector3f plain2Point, float drawn) {
 		super(transformationName);
 		this.plain1Point = plain1Point;
@@ -49,13 +51,20 @@ public class TransformationDrawn extends AbstractTransformation {
 		Vector3f centralPlain = (Vector3f) Vector3f.add(plain1Point, plain2Point, null).scale(0.5F); // bod ve stredu spojnice
 		Vector3f normalVector = Vector3f.sub(plain2Point, centralPlain, null);
 
-		normalVectorNormalized = normalVector.normalise(null); // normalizovany vektor spojnice definicnich bodu
+		if (normalVector.length() == 0) {
+			normalVectorNormalized = normalVector;
+		} else {
+			normalVectorNormalized = normalVector.normalise(null); // normalizovany vektor spojnice definicnich bodu
+		}
 		d = -Vector3f.dot(centralPlain, normalVectorNormalized); // posun roviny stredu transformace (v puli spojnice), spolu s normalou definuje rovinu tvořici střed
 																	// transformace (vertexy na ni se nehybaji)
 	}
 
 	@Override
 	public Vector3f transformVertex(Vector3f vertex, float delta) {
+		if (normalVectorNormalized.length() == 0) {
+			return vertex;
+		}
 		float weightX = Vector3f.dot(normalVectorNormalized, vertex) + d; // vzdalenost vertexu od stredove roviny
 		float weightY = MathToolbox.getWeightNumber(weightX); // pomerovy posun vertexu vuci stredove rovine <-1;1>
 
@@ -87,21 +96,21 @@ public class TransformationDrawn extends AbstractTransformation {
 	 */
 	@Override
 	public void updateEditFrame(EditFrame frame) {
-		frame.setTitle("Nečeho?");
+		frame.setTitle("Tažení");
 		frame.setSize(600, 200);
 		JPanel pane = frame.getPanel();
 		pane.setLayout(new GridLayout(2, 2, 10, 10));
 
-		VectorPane plain1 = new VectorPane("plain1point", plain1Point);
+		VectorPane plain1 = new VectorPane("Bod 1", plain1Point);
 		pane.add(plain1);
 
-		VectorPane plain2 = new VectorPane("plain2point", plain2Point);
+		VectorPane plain2 = new VectorPane("Bod 2", plain2Point);
 		pane.add(plain2);
 
 		StringPane name = new StringPane("Jméno", super.getName());
 		pane.add(name);
 
-		FloatPane flt = new FloatPane("drawn", drawn);
+		FloatPane flt = new FloatPane("Tažení", drawn);
 		pane.add(flt);
 
 		TransformationDrawn drw = this;
@@ -118,9 +127,10 @@ public class TransformationDrawn extends AbstractTransformation {
 
 		});
 	}
+
 	/*
 	 * Gettery a Settery pro ukládání do XML, XML nepodporuje Vector3f, proto je použit MarshalVector
-	 */	
+	 */
 	@XmlElement
 	public MarshalVector getPlain1Point() {
 		return new MarshalVector(plain1Point);
@@ -129,6 +139,7 @@ public class TransformationDrawn extends AbstractTransformation {
 	public void setPlain1Point(MarshalVector plain1Point) {
 		this.plain1Point = plain1Point.getVector();
 	}
+
 	@XmlElement
 	public MarshalVector getPlain2Point() {
 		return new MarshalVector(plain2Point);
@@ -137,6 +148,7 @@ public class TransformationDrawn extends AbstractTransformation {
 	public void setPlain2Point(MarshalVector plain2Point) {
 		this.plain2Point = plain2Point.getVector();
 	}
+
 	@XmlElement
 	public MarshalVector getNormalVectorNormalized() {
 		return new MarshalVector(normalVectorNormalized);
