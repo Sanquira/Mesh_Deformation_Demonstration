@@ -36,15 +36,17 @@ public class TransformationTorsion extends AbstractTransformation {
 		this.plain1Point = plain1Point;
 		this.plain2Point = plain2Point;
 		this.angle = angle;
-
+		
+		setup()
+	}
+	public setup(){
 		Vector3f centralPlain = (Vector3f) Vector3f.add(plain1Point, plain2Point, null).scale(0.5F); // bod ve stredu spojnice
 		Vector3f normalVector = Vector3f.sub(plain2Point, centralPlain, null);
 
 		normalVectorNormalized = normalVector.normalise(null); // normalizovany vektor spojnice definicnich bodu
 		d = -Vector3f.dot(centralPlain, normalVectorNormalized); // posun roviny stredu transformace (v puli spojnice), spolu s normalou definuje rovinu tvořici střed
-																	// transformace (vertexy na ni se nehybaji)
+																	// transformace (vertexy na ni se nehybaji)	
 	}
-
 	@Override
 	public Vector3f transformVertex(Vector3f vertex, float delta) {
 		float weightX = Vector3f.dot(normalVectorNormalized, vertex) + d; // vzdalenost vertexu od stredove roviny
@@ -95,7 +97,36 @@ public class TransformationTorsion extends AbstractTransformation {
 	 */
 	@Override
 	public void updateEditFrame(EditFrame frame) {
+		frame.setTitle("Krutu?");
+		frame.setSize(600, 200);
+		JPanel pane = frame.getPanel();
+		pane.setLayout(new GridLayout(2, 2, 10, 10));
 
+		VectorPane plain1 = new VectorPane("plain1point", plain1Point);
+		pane.add(plain1);
+
+		VectorPane plain2 = new VectorPane("plain2point", plain2Point);
+		pane.add(plain2);
+
+		StringPane name = new StringPane("Jméno", super.getName());
+		pane.add(name);
+
+		FloatPane flt = new FloatPane("angle", angle);
+		pane.add(flt);
+
+		TransformationDrawn drw = this;
+		frame.setEditListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				plain1Point = plain1.getVector();
+				plain2Point = plain2.getVector();
+				angle = flt.getFloat();
+				drw.setName(name.getText());
+				setup();
+			}
+
+		});
 	}
 	@XmlElement
 	public MarshalVector getPlain1Point() {
