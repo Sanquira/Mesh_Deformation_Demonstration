@@ -27,14 +27,14 @@ public class TransformationBend extends AbstractTransformation {
 	public TransformationBend(String transformationName, Vector3f point, Vector3f direction, float radius, float bend) {
 		super(transformationName);
 		this.point = point;
-		this.direction = (Vector3f) direction.normalise();
 		this.radius = radius;
 		this.bend = bend;
+		this.direction = direction;
 		setup();
 	}
 
 	private void setup() {
-
+		this.direction = (Vector3f) this.direction.normalise();
 	}
 
 	@Override
@@ -56,7 +56,40 @@ public class TransformationBend extends AbstractTransformation {
 
 	@Override
 	public void updateEditFrame(EditFrame frame) {
-		// TODO Auto-generated method stub
+		frame.setTitle("Ohybu");
+		frame.setSize(600, 200);
+		JPanel pane = frame.getPanel();
+		pane.setLayout(new GridLayout(3, 2, 10, 10));
+
+		VectorPane plain1 = new VectorPane("point", point);
+		pane.add(plain1);
+
+		VectorPane plain2 = new VectorPane("direction", direction);
+		pane.add(plain2);
+
+		StringPane name = new StringPane("Jméno", super.getName());
+		pane.add(name);
+
+		FloatPane flt = new FloatPane("radius", radius);
+		pane.add(flt);
+		
+		FloatPane bendftl = new FloatPane("bend", bend);
+		pane.add(bendflt);
+
+		TransformationBend drw = this;
+		frame.setEditListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				point = plain1.getVector();
+				direction = plain2.getVector();
+				radius = flt.getFloat();
+				bend = bendftl.getFloat();
+				drw.setName(name.getText());
+				setup();
+			}
+
+		});
 
 	}
 
