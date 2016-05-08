@@ -114,7 +114,7 @@ public class TransformationTorsion extends AbstractTransformation {
 		FloatPane flt = new FloatPane("angle", angle);
 		pane.add(flt);
 
-		TransformationDrawn drw = this;
+		TransformationTorsion drw = this;
 		frame.setEditListener(new ActionListener() {
 
 			@Override
