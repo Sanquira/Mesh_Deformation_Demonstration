@@ -1,3 +1,4 @@
+package Demos;
 import gui.swing.EditFrame;
 import gui.swing.SelectPane;
 

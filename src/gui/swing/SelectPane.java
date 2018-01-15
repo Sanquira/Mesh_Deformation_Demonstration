@@ -20,7 +20,8 @@ import javax.swing.JScrollPane;
 import meshOperations.transformation.AbstractTransformation;
 import net.miginfocom.swing.MigLayout;
 
-public class SelectPane extends JScrollPane {
+public class SelectPane extends JScrollPane
+{
 
 	private CopyOnWriteArrayList<AbstractTransformation> list;
 	private ButtonGroup btns = new ButtonGroup();
@@ -28,12 +29,14 @@ public class SelectPane extends JScrollPane {
 	private JPanel listPane;
 	public int selected = 0;
 
-	public SelectPane(CopyOnWriteArrayList<AbstractTransformation> copyOnWriteArrayList) {
+	public SelectPane(CopyOnWriteArrayList<AbstractTransformation> copyOnWriteArrayList)
+	{
 		this.list = copyOnWriteArrayList;
 		initialCreate();
 	}
 
-	private void initialCreate() {
+	private void initialCreate()
+	{
 		contentPane.setLayout(new MigLayout("nogrid,fillx", "[]", "[grow 200,fill][]"));
 
 		listPane = new JPanel();
@@ -47,11 +50,14 @@ public class SelectPane extends JScrollPane {
 		up.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				ButtonModel model = btns.getSelection();
-				if (model != null) {
+				if (model != null)
+				{
 					Integer pos = Integer.valueOf(model.getActionCommand());
-					if (pos != 0) {
+					if (pos != 0)
+					{
 						selected = pos - 1;
 						shift(pos);
 					}
@@ -63,11 +69,14 @@ public class SelectPane extends JScrollPane {
 		down.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				ButtonModel model = btns.getSelection();
-				if (model != null) {
+				if (model != null)
+				{
 					Integer pos = Integer.valueOf(model.getActionCommand());
-					if (pos < list.size() - 1) {
+					if (pos < list.size() - 1)
+					{
 						selected = pos + 1;
 						shift(pos);
 					}
@@ -79,9 +88,11 @@ public class SelectPane extends JScrollPane {
 		delete.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				ButtonModel model = btns.getSelection();
-				if (model != null) {
+				if (model != null)
+				{
 					Integer pos = Integer.valueOf(model.getActionCommand());
 					delete(pos);
 				}
@@ -96,7 +107,8 @@ public class SelectPane extends JScrollPane {
 		this.setViewportView(contentPane);
 	}
 
-	private JPanel constructPanel(AbstractTransformation t, int i) {
+	private JPanel constructPanel(AbstractTransformation t, int i)
+	{
 		JPanel result = new JPanel(new BorderLayout());
 
 		JCheckBox check = new JCheckBox();
@@ -113,7 +125,8 @@ public class SelectPane extends JScrollPane {
 		result.addMouseListener(new MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
 				new EditFrame(t, true).setVisible(true);
 			}
 
@@ -121,26 +134,33 @@ public class SelectPane extends JScrollPane {
 		return result;
 	}
 
-	public void shift(int pos) {
+	public void shift(int pos)
+	{
 		AbstractTransformation a = list.remove(pos);
-		if (selected == list.size()) {
+		if (selected == list.size())
+		{
 			list.add(a);
-		}
-		else {
+		} else
+		{
 			list.add(selected, a);
 		}
 		// System.out.println(list);
 		updateList();
 	}
 
-	public void delete(int pos) {
+	public void delete(int pos)
+	{
+		if (pos < 0 || pos >= list.size())
+			return;
 		list.remove(pos);
 		updateList();
 	}
 
-	public void updateList() {
+	public void updateList()
+	{
 		listPane.removeAll();
-		for (int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++)
+		{
 			// System.out.println(list.get(i).getName());
 			listPane.add(constructPanel(list.get(i), i), "growx");
 		}
@@ -148,7 +168,8 @@ public class SelectPane extends JScrollPane {
 		this.repaint();
 	}
 
-	public CopyOnWriteArrayList<AbstractTransformation> getList() {
+	public CopyOnWriteArrayList<AbstractTransformation> getList()
+	{
 		return list;
 	}
 

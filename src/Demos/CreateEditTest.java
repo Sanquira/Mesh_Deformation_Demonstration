@@ -1,3 +1,4 @@
+package Demos;
 import org.lwjgl.util.vector.Vector3f;
 
 import gui.swing.EditFrame;
